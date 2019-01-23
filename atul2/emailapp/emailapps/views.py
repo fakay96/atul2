@@ -4,8 +4,8 @@ from urllib import request
 from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-
-
+from .api import mailserializer
+from django_handlers import Handler
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
@@ -20,10 +20,15 @@ def send_email(request):
         # In reality we'd use a form class
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
+@handler.get('mails')
 def sentmails(request):
+    serializer_class=mailserializer
     mail=[]
-    maillist=mail.objects.get().values("mail","sender","recepient","cc")
-    mail.append(maillist)
-    ui=mail.pop()
     userf=request.User.email
+    if request.method =='GET':
+        query=mail.objects.all()
+        mail.append(query)
+        ui=mail.pop()
+        return JsonResponse({ui.data})
+  
     return userf

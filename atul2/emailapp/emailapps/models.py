@@ -2,7 +2,7 @@ from django.db import models
 from .views import sentmails
 class mail(models.Model):
     #userf=sentmails.__get__(userf)
-    mail=models.TextField(default="",max_length=1000000000)         
+    message=models.TextField(default="",max_length=1000000000)         
     sender=models.EmailField(default=sentmails,editable=False)
     recepient=models.CharField(default="",max_length=100)
     a=[                                                                        ]
@@ -10,14 +10,14 @@ class mail(models.Model):
     cc=models.CharField(default=a,max_length=100000000)
         
        
+class drafts(models.Model):
 
-
-    def drafts(request):
-            mail=models.CharField(default="",max_length="")
-            sender=models.EmailField(default=request.User.email(),editable=False)
+            mail=models.TextfieldField(default="",max_length="")
+            sender=models.EmailField(default=sentmails,editable=False)
             recepient=models.CharField(default="",max_length=100)
-            a=["","","","","","","","","","",]
-            cc=models.CharField(default=a[0+1])
+            a=[]
+            
+            cc=models.CharField(default=a,max_length=10000)
 
 
 
