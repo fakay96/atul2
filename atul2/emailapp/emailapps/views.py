@@ -5,8 +5,9 @@ from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from .api import mailsserializer
-from django_handlers import Handler
+from rest_framework.response import Response
 from send2trash import send2trash
+from rest_framework.views import APIView
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
@@ -41,12 +42,18 @@ def send_email(request):
 #require json tags coming from the ui to 
 # 
 # 
-#     
+#  
+#    
+class Maills(APIView):
+    def get(self,request):
+        mail=MailCompose.objects.all()
+        serializer=mailsserializer(mail,many=True)
 
-def send_multiple_emails():
-    def send_mail():
-        pass
-    pass
+        return Response(serializer.data)
+
+
+
+
 
     
 #if json tags contains "cc"
@@ -94,8 +101,9 @@ def trashcan(request):
     emaildetails=request.POST.get("message")
 
     if Trashbutton:
-        delete=MailCompose.objects.get().filter(message=emaildetails) 
-        fork=Trash.save(delete)
+        Trash=MailCompose.objects.get().filter(message=emaildetails) 
+        fork=Trash.save(Trash)
+        Trash.delete()
         sent2trash(delete)
 
 

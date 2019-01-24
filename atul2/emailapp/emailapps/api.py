@@ -10,4 +10,4 @@ class Userss(serializers.HyperlinkedModelSerializer):
 class mailsserializer(serializers.ModelSerializer):
     class Meta:
         model=MailCompose
-        fields=('sender','recepients','message','cc')
+        fields=('sender','recepient','message','cc')
