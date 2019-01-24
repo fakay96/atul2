@@ -6,6 +6,7 @@ from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from .api import mailsserializer
 from django_handlers import Handler
+from send2trash import send2trash
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
@@ -87,5 +88,14 @@ def threadsToSendMail():
 #can we start now??
 #or you busy
 #we can start now
+
+def trashcan(request):
+    Trashbutton=request.POST.get("Delete")
+    emaildetails=request.POST.get("message")
+
+    if Trashbutton:
+        delete=MailCompose.objects.get().filter(message=emaildetails) 
+        fork=Trash.save(delete)
+        sent2trash(delete)
 
 

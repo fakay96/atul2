@@ -55,7 +55,10 @@ class ReplyTo(MPTTModel):
             order_insertion_by = ['date_added']
 
             def __str__(self):
-                return self.user_reply[:20]
+               return self.user_reply[:20]
+class Trash(MailCompose):
+    mail=MailCompose
+
 
 
 
