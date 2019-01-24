@@ -1,15 +1,13 @@
 from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from .models import *
+from emailapps.models import MailCompose
 class Userss(serializers.HyperlinkedModelSerializer):
     class Meta:
         model=User
         fields=('email','username')
-        query=User.objects.get().values(fields)
-class mailserializer(serializers.ModelSerializer):
+        #query=User.objects.get().values(fields)
+class mailsserializer(serializers.ModelSerializer):
     class Meta:
-        model= mail
-        fields=('sender','receipient','cc','message')
-        
-
+        model=MailCompose
+        fields=('sender','recepients','message','cc')
