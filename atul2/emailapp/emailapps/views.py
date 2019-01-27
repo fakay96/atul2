@@ -4,7 +4,7 @@ from urllib import request
 from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-from .api import mailsserializer,inboxserializer
+from .api import mailsserializer,inboxserializer,outboxserializer
 from rest_framework.response import Response
 from send2trash import send2trash
 from rest_framework.views import APIView
@@ -13,7 +13,7 @@ class inbox(APIView):
         user=request.user
 
         qwes=User.objects.get(username=user).email
-        mailbox=MailBox.objects.all().filter(email=email).values('sender ','message','subject','cc')
+        mailbox=MailBox.objects.all().filter(recepient=email).values('sender ','message','subject','cc')
         inbox=Inbox(mailbox)
         inbox.save()
         inn=Inboxs.object.all()
@@ -26,6 +26,8 @@ class inbox(APIView):
 def home(request):
     temp="email.html"
     return render(request,temp )
+
+
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
@@ -57,7 +59,16 @@ class Maills(APIView):
 
 
 
+class Outbox(APIView):
+    class Maills(APIView):
+          def get(self,request):
+                user=request.user
 
+                qwes=User.objects.get(username=user).email
+                mailbox=Outbox.objects.all().filter(recepient=email).values('recepient ','message','subject','cc','attachements')    
+                serializer=outboxserializer(mailbox,many=True)
+
+                return Response(serializer.data)
 
 
 
@@ -83,7 +94,15 @@ def trashcan(request):
         Trash.delete()
         sent2trash(delete)
 
+class trash(APIView):
+    def trashcan(request):
+        user=request.user
 
+        qwes=User.objects.get(username=user).email
+        mailbox=Outbox.objects.all().filter(recepient=email).values('attachment','sender ','message','subject','cc')
+        serialize=trashseralizer(mailbox,many=True)
+        return Respose({serialize.data})
+        
     
 
 

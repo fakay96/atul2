@@ -23,6 +23,8 @@ urlpatterns = [
      url('send_email',views.send_email),
      url('',views.home),
      url('inboxs/',views.inbox.as_view()),
+    url('outboxs/',views.outbox.as_view()),
+     url('trash/',views.trash.as_view()),
 
 ]
 urlpatterns=fs(urlpatterns)
