@@ -1,0 +1,58 @@
+
+<html>
+<head>
+</head>
+<body>
+
+<form class="form-horizontal" action="send_email" method="POST">
+            {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label" for="labourersname">Subject</label>
+                <div class="controls">
+                  <input id="Contractorsname" name="subject" placeholder="" class="form-control input-lg" type="text">
+                  <p class="help-block">Labourers Name can contain any letters or numbers, without spaces</p>
+                </div>
+              </div>
+           
+              <div class="control-group">
+                <label class="control-label" for="companyname">Receipients</label>
+                <div class="controls">
+                  <input id="companyname" name="recepient" placeholder="" class="form-control input-lg" type="text" >
+                  <p class="help-block">AccountNumber</p>
+                </div>
+              </div>
+           
+              <div class="control-group">
+                <label class="control-label" for="contractdescription">Message</label>
+                <div class="controls">
+                  <input id="datahere" name="message" placeholder="" class="form-control input-lg" list="selectoption">
+                  
+                </div>
+              </div>
+           
+              <div class="control-group">
+                <label class="control-label" for="contractdescription">Attachments</label>
+                <div class="controls">
+                  <input id="contractdescription" name="attachments" placeholder="" class="form-control input-lg" type="number">
+                  <p class="help-block">This should contain the agreed rate for Labourers</p>
+                </div>
+              </div>
+              <div class="control-group">
+                    <label class="control-label" for="contact number">CONTACT NUMBER</label>
+                    <div class="controls">
+                      <input id="contractdescription" name="contactnumber" placeholder="" class="form-control input-lg" type="number">
+                      <p class="help-block">contractnumber between 0-9</p>
+                    </div>
+                  </div>
+              <div class="control-group">
+                <!-- Button -->
+                <div class="controls">
+                  <button class="btn btn-success">Register</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+
+</form>
+</body>
+</html>

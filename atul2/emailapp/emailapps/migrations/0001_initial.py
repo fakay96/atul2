@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='MailCompose',
+            name='MailBox',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('check', models.CharField(default='rff', max_length=20)),
@@ -22,8 +22,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Drafts',
             fields=[
-                ('mailcompose_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='emailapps.MailCompose')),
+                ('MailBox_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='emailapps.MailBox')),
             ],
-            bases=('emailapps.mailcompose',),
+            bases=('emailapps.MailBox',),
         ),
     ]

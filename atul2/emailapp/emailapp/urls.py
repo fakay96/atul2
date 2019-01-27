@@ -20,6 +20,9 @@ from emailapps import views
 urlpatterns = [
     url('admin/', admin.site.urls),
      url('mails/', views.Maills.as_view()),
+     url('send_email',views.send_email),
+     url('',views.home),
+     url('inboxs/',views.inbox.as_view()),
 
 ]
 urlpatterns=fs(urlpatterns)

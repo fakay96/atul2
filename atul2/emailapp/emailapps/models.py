@@ -6,9 +6,14 @@ LIMIT_FOR_MAIL = 1000000000
 LIMIT_FOR_CC = 10000
 LIMIT_FOR_TO = 10000
 LIMIT_FOR_ATTACHMENTS = 100
+#select * from MailBox where email is mojolafkaye@
 
 
-class MailCompose(models.Model):
+#MailBox to MailBox
+#InBox
+
+
+class MailBox(models.Model):
     
     #userf=sentmails.__get__(userf)
     global LIMIT_FOR_MAIL
@@ -17,18 +22,25 @@ class MailCompose(models.Model):
     # editable=False, beacuse once a user logged in it shouldnt get updated.
     sender=models.EmailField(default=User,editable=False)
     recepient=models.CharField(default="",max_length=100)
+    subject=models.CharField(default="",max_length=LIMIT_FOR_CC)
+    attachment=models.FileField(default="ire.txt")
     a=[]
     lenght=len(a)
     cc=models.CharField(default=a,max_length=LIMIT_FOR_CC)
     def __str__(self):
             return self.message[:50] + '...'
+
+
+class Inboxs(MailBox):
+      mail=MailBox
+               
        
-class Drafts(MailCompose):
+class Drafts(MailBox):
      
-    mail=MailCompose
+    mail=MailBox
    
 
-#its from the argument Mailcompose ....
+#its from the argument MailBox ....
 
 
 #drafts??
@@ -42,11 +54,14 @@ class Drafts(MailCompose):
 # the models not migrting.........
 #    
 # y(#6got it...))
-class Outbox(MailCompose):
-    mail=MailCompose
+class Outbox(MailBox):
+    mail=MailBox
+
+
+
 
 class ReplyTo(MPTTModel):
-    message = models.ForeignKey(MailCompose, related_name='comments',on_delete=models.CASCADE)
+    message = models.ForeignKey(MailBox, related_name='comments',on_delete=models.CASCADE)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children',db_index=True, on_delete=models.CASCADE)
     reply = models.CharField(max_length=500, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -56,8 +71,14 @@ class ReplyTo(MPTTModel):
 
             def __str__(self):
                return self.user_reply[:20]
-class Trash(MailCompose):
-    mail=MailCompose
+
+            #in MailBox there will be a single mail...
+            # but in draft and Trash and OutBox..there will be multiple mails
+            #Thesen owill get mails and other details from DB table depending upon user logged in.
+            #my point is no matter 
+class Trash(MailBox):
+
+    mail=MailBox
 
 
 

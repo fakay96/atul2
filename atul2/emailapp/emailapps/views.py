@@ -4,49 +4,53 @@ from urllib import request
 from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-from .api import mailsserializer
+from .api import mailsserializer,inboxserializer
 from rest_framework.response import Response
 from send2trash import send2trash
 from rest_framework.views import APIView
+class inbox(APIView):
+    def get(self,request):
+        user=request.user
+
+        qwes=User.objects.get(username=user).email
+        mailbox=MailBox.objects.all().filter(email=email).values('sender ','message','subject','cc')
+        inbox=Inbox(mailbox)
+        inbox.save()
+        inn=Inboxs.object.all()
+        serializer=inboxserializer(inn,many=True)
+        hmtl="in.html"
+        return Response({serializer.data})
+
+
+
+def home(request):
+    temp="email.html"
+    return render(request,temp )
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
-    from_email = request.POST.get('from_email', '')
-    if subject and message and from_email:
+    from_email = request.POST.get('recepient', '')
+    user=request.user
+    qwes=User.objects.get(username=user).email
+    print(qwes)
+    if subject and message and qwes:
         try:
-            send_mail(subject, message, from_email, ['admin@example.com'])
+            mail=MailBox(subject=subject,message=message,recepient=from_email,sender=qwes)
+            mal=Outbox(subject=subject,message=message,recepient=from_email,sender=qwes)
+            mal.save()
+            mail.save()
+
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/contact/thanks/')
+        return HttpResponseRedirect('send_email')
     else:
         # In reality we'd use a form class
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
-#@handler.get('mails')
  
-
-# message :"helllloooooo"
-# sender :"fakay96@gmail.com"
-# recepient:"ceceee@gmail.com"
-#         
-# message :"helllloooooo"
-# sender :"fakay96@gmail.com"
-# recepient:"ceceee@gmail.com"
-#         
-# message :"helllloooooo"
-# sender :"fakay96@gmail.com"
-# recepient:"ceceee@gmail.com"
-#         
-  
-
-#require json tags coming from the ui to 
-# 
-# 
-#  
-#    
 class Maills(APIView):
     def get(self,request):
-        mail=MailCompose.objects.all()
+        mail=MailBox.objects.all()
         serializer=mailsserializer(mail,many=True)
 
         return Response(serializer.data)
@@ -55,46 +59,19 @@ class Maills(APIView):
 
 
 
-    
-#if json tags contains "cc"
-# we would call the function send multiple 
-# we can implement sender function with and without cc..
-#if cc is empty that loop will execute zero times, if cc has some emails then it will execute that many times. ?
-#else call the function send mail?..ok.
 
-def threadsToSendMail():
+
+def emailthread():
     mail=[]
     if request.method =='GET':#recepent,mail subject,mail body
         query=mail.objects.all()
         mail.push(query)
         ui=mail.pop()
         return JsonResponse({ui.data})
-#a=groupby(ui.data.recepient) so therefore all reciepients are treated as one on the ui and we can have threadlike structure
-#sry,...i didnt get u..
-#okay im saying we will use the ui.data.recepient as a basis fro  our thread, since the messages sent to .....
-
-
-# threads may be some key word...so cant we rename it to threadsToSendMail.kkkkk
-#I am reading from re....
-#  2: trash box
-#3: in adddtion to auto complete for to list(we have to validate the to/cc are correct email as per the DB)
-#yeah
 
 
 
 
-
-#my sister is stranded somewherre trying to send her money but i myself don have enough :
-# I will release payment for this adhoc work ASAP...dont worry..soon u will have enoug
-#loooool :). ok...
-#:)Back to work...k
-
-
-#letspick it one by one so as to not go out of scope. i will complete the  things we discussed today??
-#sounds good.k
-#can we start now??
-#or you busy
-#we can start now
 
 def trashcan(request):
     Trashbutton=request.POST.get("Delete")
@@ -105,5 +82,10 @@ def trashcan(request):
         fork=Trash.save(Trash)
         Trash.delete()
         sent2trash(delete)
+
+
+    
+
+
 
 
